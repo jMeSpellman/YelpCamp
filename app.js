@@ -7,6 +7,7 @@ const ejsMate = require('ejs-mate');
 const ExpressError = require('./utils/ExpressError');
 const methodOverride = require('method-override');
 const session = require('express-session');
+const flash = require('connect-flash');
 // const Campground = require('./models/campground');
 // const { reflect } = require('async');
 // const Review = require('./models/review');
@@ -52,9 +53,16 @@ const sessionConfig = {
 };
 
 app.use(session(sessionConfig));
+app.use(flash());
 
-app.use('/campgrounds', campgrounds)
-app.use('/campgrounds/:id/reviews', reviews)
+app.use((req, res, next) => {
+    res.locals.success = req.flash('success');
+    res.locals.error = req.flash('error');
+    next();
+});
+
+app.use('/campgrounds', campgrounds);
+app.use('/campgrounds/:id/reviews', reviews);
 
 app.get('/', (req, res) => {
     res.render('home');
