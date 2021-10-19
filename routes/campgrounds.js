@@ -31,13 +31,23 @@ router.post('/', validateCampground, catchAsync(async (req, res, next) => {
         res.redirect(`/campgrounds/${campground._id}`);
 }));
 
+// http://localhost:3000/campgrounds/610a8786c663b543b0a347c7
+
 router.get('/:id', catchAsync(async (req, res) => {
     const campground = await Campground.findById(req.params.id).populate('reviews');
+    if(!campground){
+        req.flash('error','Cannot Find that campground');
+        return res.redirect('/campgrounds');
+    };
     res.render('campgrounds/show', { campground });
 }));
 
 router.get('/:id/edit', catchAsync(async (req, res) => {
     const campground = await Campground.findById(req.params.id);
+    if(!campground){
+        req.flash('error','Cannot Find that campground');
+        return res.redirect('/campgrounds');
+    };
     res.render('campgrounds/edit', { campground });
 }));
 
