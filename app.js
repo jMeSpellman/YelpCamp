@@ -1,5 +1,8 @@
 if (process.env.NODE_ENV !== "production"){
     require('dotenv').config();
+    // Line below is an unsafe Hack and should not be used for Production purposes
+    // process.env['NODE_TLS_REJECT_UNAUTHORIZED'] = '0'; 
+    // Need to resolve Self Signed Certificate Error, where the Certificate is Untrusted!
 }
 
 
